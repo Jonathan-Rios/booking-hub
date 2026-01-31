@@ -3,6 +3,7 @@ import { DatePicker } from "@/components/ui/date-picker";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -42,6 +43,11 @@ export function BookingForm({
           <DialogTitle>
             {isEditingBooking ? "Edit Booking" : "New Booking"}
           </DialogTitle>
+          <DialogDescription className="sr-only">
+            {isEditingBooking
+              ? "Edit the booking details below"
+              : "Fill in the details to create a new booking"}
+          </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={() => {}} className="space-y-5">
