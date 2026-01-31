@@ -46,11 +46,17 @@ export function BookingForm({
     isSubmitting,
     onSubmit,
     isEditingBooking,
+    startDate,
+    handleAccidentalClose,
   } = useBookingForm({ bookingToEdit, onClose, isFormOpen: open });
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="gap-5 sm:max-w-lg">
+      <DialogContent
+        className="gap-5 sm:max-w-lg"
+        onInteractOutside={handleAccidentalClose}
+        onEscapeKeyDown={handleAccidentalClose}
+      >
         <DialogHeader>
           <DialogTitle>
             {isEditingBooking ? "Edit Booking" : "New Booking"}
@@ -126,7 +132,10 @@ export function BookingForm({
                   label="End Date"
                   value={field.value}
                   onChange={field.onChange}
-                  minDate={isEditingBooking ? undefined : new Date()}
+                  minDate={
+                    isEditingBooking ? undefined : (startDate ?? new Date())
+                  }
+                  initialMonth={field.value ?? startDate}
                   placeholder="Select end date"
                   error={errors.endDate?.message}
                 />
