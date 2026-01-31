@@ -37,7 +37,7 @@ function App() {
           onClick={openCreateForm}
           className="bg-app-secondary hover:bg-app-tertiary text-white sm:self-end"
         >
-          <Plus className="size-4" />
+          <Plus className="mb-0.5 size-4" />
 
           <span>Add Booking</span>
         </Button>
@@ -48,7 +48,7 @@ function App() {
       <BookingForm
         open={isFormOpen}
         onClose={closeForm}
-        isEditingBooking={!!bookingToEdit}
+        bookingToEdit={bookingToEdit}
       />
 
       <DeleteConfirmDialog
