@@ -1,7 +1,7 @@
 @theme {
-  --color-primary: #2d2aa5;
-  --color-secondary: #40caa1;
-  --color-tertiary: #45556c;
+  --color-app-primary: #2d2aa5;
+  --color-app-secondary: #40caa1;
+  --color-app-tertiary: #45556c;
   --color-primary-text: #1f2937;
   --color-secondary-text: #6b7280;
 
