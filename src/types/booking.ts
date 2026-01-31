@@ -9,6 +9,7 @@ export const BookingStatus = {
 export interface IBooking {
   id: string;
   guestName: string;
+  propertyName: string;
   email: string;
   startDate: Date;
   endDate: Date;
