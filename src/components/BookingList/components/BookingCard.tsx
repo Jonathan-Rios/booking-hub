@@ -8,13 +8,11 @@ import { useMemo } from "react";
 
 interface IBookingCardProps {
   booking: IBooking;
-  setBookingToRemove: (booking: IBooking | null) => void;
+  onEdit: (booking: IBooking) => void;
+  onRemove: (booking: IBooking) => void;
 }
 
-export function BookingCard({
-  booking,
-  setBookingToRemove,
-}: IBookingCardProps) {
+export function BookingCard({ booking, onEdit, onRemove }: IBookingCardProps) {
   const formattedDateRange = useMemo(
     () => formatDateRange(booking.startDate, booking.endDate),
     [booking.startDate, booking.endDate],
@@ -23,16 +21,18 @@ export function BookingCard({
   return (
     <Card className="py-0">
       <CardContent className="flex flex-col gap-3 p-5 sm:flex-row sm:items-center sm:gap-7">
-        <div className="flex flex-col gap-3 sm:gap-2">
-          <div className="flex flex-col text-xs">
+        <div className="flex min-w-0 flex-col gap-3 sm:gap-2">
+          <div className="flex flex-col text-xs break-all">
             <h3 className="text-title">{booking.guestName}</h3>
 
-            <p className="text-body text-secondary-text">{booking.email}</p>
+            <p className="text-body text-secondary-text break-all">
+              {booking.email}
+            </p>
           </div>
 
           <div className="flex flex-col gap-1 sm:flex-row">
             <span className="text-label">Property Name:</span>
-            <p className="text-body">{booking.propertyName}</p>
+            <p className="text-body break-all">{booking.propertyName}</p>
           </div>
         </div>
 
@@ -54,7 +54,7 @@ export function BookingCard({
             className="w-full min-w-24 sm:w-auto"
             size="sm"
             onClick={() => {
-              // TODO: Open edit booking modal
+              onEdit(booking);
             }}
           >
             <Pencil className="size-3.5" />
@@ -64,7 +64,7 @@ export function BookingCard({
             variant="outline-tertiary"
             size="sm"
             onClick={() => {
-              setBookingToRemove(booking);
+              onRemove(booking);
             }}
             className="w-full min-w-24 sm:w-auto"
           >

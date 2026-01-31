@@ -13,11 +13,13 @@ import { AlertTriangle } from "lucide-react";
 interface IDeleteConfirmDialogProps {
   booking: IBooking | null;
   onClose: () => void;
+  onConfirm: () => void;
 }
 
 export function DeleteConfirmDialog({
   booking,
   onClose,
+  onConfirm,
 }: IDeleteConfirmDialogProps) {
   return (
     <AlertDialog open={!!booking} onOpenChange={onClose}>
@@ -30,15 +32,15 @@ export function DeleteConfirmDialog({
           Delete Booking?
         </AlertDialogTitle>
 
-        <AlertDialogDescription className="text-secondary-text space-y-2 text-center">
-          <p>
-            Are you sure you want to delete the booking for{" "}
-            <span className="text-primary-text font-medium">
-              {booking?.guestName}
-            </span>
-            ?
-          </p>
-          <p className="text-sm">This action cannot be undone.</p>
+        <AlertDialogDescription className="text-secondary-text text-center">
+          Are you sure you want to delete the booking for{" "}
+          <span className="text-primary-text font-medium">
+            {booking?.guestName}
+          </span>
+          ?{" "}
+          <span className="mt-2 block text-sm">
+            This action cannot be undone.
+          </span>
         </AlertDialogDescription>
 
         <AlertDialogFooter className="gap-4 sm:justify-center">
@@ -50,9 +52,7 @@ export function DeleteConfirmDialog({
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction
-            onClick={() => {
-              // TODO: Handle delete action
-            }}
+            onClick={onConfirm}
             variant="filled-primary"
             className="w-full sm:w-1/2"
           >

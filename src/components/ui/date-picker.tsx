@@ -36,10 +36,7 @@ export function DatePicker({
   return (
     <div className="flex flex-col gap-1.5">
       {label && (
-        <Label
-          htmlFor={id}
-          className="text-muted-foreground text-sm font-medium"
-        >
+        <Label htmlFor={id} className="text-secondary-text text-sm font-medium">
           {label}
         </Label>
       )}
@@ -57,7 +54,7 @@ export function DatePicker({
               error && "border-destructive focus-visible:ring-destructive/20",
             )}
           >
-            <CalendarIcon className="mr-2 h-4 w-4 opacity-70" />
+            <CalendarIcon className="mb-0.5 size-4 opacity-70" />
             {value ? formatDate(value) : <span>{placeholder}</span>}
           </Button>
         </PopoverTrigger>
@@ -65,6 +62,7 @@ export function DatePicker({
           <Calendar
             mode="single"
             selected={value}
+            defaultMonth={value}
             onSelect={(date) => {
               onChange(date);
               setOpen(false);

@@ -1,14 +1,15 @@
-import { bookingExamples } from "@/mockData";
 import { BookingCard } from "./components/BookingCard";
 import { CalendarX } from "lucide-react";
+import { useBookings } from "@/context/BookingContext";
 import type { IBooking } from "@/types/booking";
 
 interface IBookingListProps {
-  setBookingToRemove: (booking: IBooking | null) => void;
+  onEdit: (booking: IBooking) => void;
+  onRemove: (booking: IBooking) => void;
 }
 
-export function BookingList({ setBookingToRemove }: IBookingListProps) {
-  const bookings = bookingExamples; // TODO: Replace with real data
+export function BookingList({ onEdit, onRemove }: IBookingListProps) {
+  const { bookings } = useBookings();
 
   if (bookings.length === 0) {
     return (
@@ -32,7 +33,8 @@ export function BookingList({ setBookingToRemove }: IBookingListProps) {
         <BookingCard
           key={booking.id}
           booking={booking}
-          setBookingToRemove={setBookingToRemove}
+          onEdit={onEdit}
+          onRemove={onRemove}
         />
       ))}
     </div>

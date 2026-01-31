@@ -1,45 +1,68 @@
+import { Toaster } from "@/components/ui/sonner";
 import { Plus } from "lucide-react";
 import { Button } from "./components/ui/button";
 import { BookingList } from "./components/BookingList";
 import { Header } from "./components/Header";
-import { useState } from "react";
-import { BookingForm } from "./components/BookingList/components/BookingForm";
-import type { IBooking } from "./types/booking";
-import { DeleteConfirmDialog } from "./components/BookingList/components/DeleteConfirmModal";
+import { BookingForm } from "./components/BookingForm";
+import { DeleteConfirmDialog } from "./components/DeleteConfirmDialog";
+import { useBookingDialogs } from "./hooks/useBookingDialogs";
+import { useBookings } from "./context/BookingContext";
+import { toast } from "sonner";
 
 function App() {
-  const [isFormDialogOpen, setIsFormDialogOpen] = useState<boolean>(false);
-  const [bookingToRemove, setBookingToRemove] = useState<IBooking | null>(null);
+  const {
+    isFormOpen,
+    bookingToEdit,
+    bookingToRemove,
+    openCreateForm,
+    openEditForm,
+    closeForm,
+    openRemoveDialog,
+    closeRemoveDialog,
+  } = useBookingDialogs();
+
+  const { deleteBooking } = useBookings();
+
+  function handleConfirmRemove() {
+    if (bookingToRemove) {
+      deleteBooking(bookingToRemove.id);
+      closeRemoveDialog();
+      toast.success("Booking deleted successfully");
+    }
+  }
+
   return (
-    <div className="flex min-h-screen flex-col gap-5 sm:p-8">
-      <Header />
+    <>
+      <div className="flex min-h-screen flex-col gap-5 sm:p-8">
+        <Header />
 
-      <div className="flex flex-col gap-5 p-5 sm:p-0">
-        <Button
-          onClick={() => {
-            setIsFormDialogOpen(true);
-          }}
-          className="bg-app-secondary hover:bg-app-tertiary text-white sm:self-end"
-        >
-          <Plus className="size-4" />
+        <div className="flex flex-col gap-5 p-5 sm:p-0">
+          <Button
+            onClick={openCreateForm}
+            className="bg-app-secondary hover:bg-app-tertiary text-white sm:self-end"
+          >
+            <Plus className="mb-0.5 size-4" />
 
-          <span>Add Booking</span>
-        </Button>
+            <span>Add Booking</span>
+          </Button>
 
-        <BookingList setBookingToRemove={setBookingToRemove} />
+          <BookingList onEdit={openEditForm} onRemove={openRemoveDialog} />
+        </div>
+
+        <BookingForm
+          open={isFormOpen}
+          onClose={closeForm}
+          bookingToEdit={bookingToEdit}
+        />
+
+        <DeleteConfirmDialog
+          booking={bookingToRemove}
+          onClose={closeRemoveDialog}
+          onConfirm={handleConfirmRemove}
+        />
       </div>
-
-      <BookingForm
-        open={isFormDialogOpen}
-        onClose={() => setIsFormDialogOpen(false)}
-        isEditingBooking={false}
-      />
-
-      <DeleteConfirmDialog
-        booking={bookingToRemove}
-        onClose={() => setBookingToRemove(null)}
-      />
-    </div>
+      <Toaster position="top-right" richColors />
+    </>
   );
 }
 
