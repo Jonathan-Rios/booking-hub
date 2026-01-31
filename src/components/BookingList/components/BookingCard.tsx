@@ -20,15 +20,19 @@ export function BookingCard({ booking }: IBookingCardProps) {
     <Card className="py-0">
       <CardContent className="flex flex-col gap-3 p-5 sm:flex-row sm:items-center sm:gap-7">
         <div className="flex flex-col gap-3 sm:gap-2">
-          <h3 className="text-title">{booking.guestName}</h3>
+          <div className="flex flex-col text-xs">
+            <h3 className="text-title">{booking.guestName}</h3>
+
+            <p className="text-body text-secondary-text">{booking.email}</p>
+          </div>
 
           <div className="flex flex-col gap-1 sm:flex-row">
-            <span className="text-label">Email:</span>
-            <p className="text-body">{booking.email}</p>
+            <span className="text-label">Property Name:</span>
+            <p className="text-body">{booking.propertyName}</p>
           </div>
         </div>
 
-        <div className="flex flex-col gap-3 sm:gap-2">
+        <div className="flex flex-col justify-between gap-3 self-stretch sm:gap-2">
           <div className="flex flex-col gap-1 sm:flex-row">
             <span className="text-label">Status:</span>
             <BookingStatusBadge status={booking.status} />
