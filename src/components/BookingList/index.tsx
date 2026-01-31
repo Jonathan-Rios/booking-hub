@@ -1,8 +1,13 @@
 import { bookingExamples } from "@/mockData";
 import { BookingCard } from "./components/BookingCard";
 import { CalendarX } from "lucide-react";
+import type { IBooking } from "@/types/booking";
 
-export function BookingList() {
+interface IBookingListProps {
+  setBookingToRemove: (booking: IBooking | null) => void;
+}
+
+export function BookingList({ setBookingToRemove }: IBookingListProps) {
   const bookings = bookingExamples; // TODO: Replace with real data
 
   if (bookings.length === 0) {
@@ -24,7 +29,11 @@ export function BookingList() {
   return (
     <div className="flex flex-col gap-5">
       {bookings.map((booking) => (
-        <BookingCard key={booking.id} booking={booking} />
+        <BookingCard
+          key={booking.id}
+          booking={booking}
+          setBookingToRemove={setBookingToRemove}
+        />
       ))}
     </div>
   );

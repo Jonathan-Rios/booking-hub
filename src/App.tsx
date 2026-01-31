@@ -4,9 +4,12 @@ import { BookingList } from "./components/BookingList";
 import { Header } from "./components/Header";
 import { useState } from "react";
 import { BookingForm } from "./components/BookingList/components/BookingForm";
+import type { IBooking } from "./types/booking";
+import { DeleteConfirmDialog } from "./components/BookingList/components/DeleteConfirmModal";
 
 function App() {
   const [isFormDialogOpen, setIsFormDialogOpen] = useState<boolean>(false);
+  const [bookingToRemove, setBookingToRemove] = useState<IBooking | null>(null);
   return (
     <div className="flex min-h-screen flex-col gap-5 sm:p-8">
       <Header />
@@ -23,13 +26,18 @@ function App() {
           <span>Add Booking</span>
         </Button>
 
-        <BookingList />
+        <BookingList setBookingToRemove={setBookingToRemove} />
       </div>
 
       <BookingForm
         open={isFormDialogOpen}
         onClose={() => setIsFormDialogOpen(false)}
         isEditingBooking={false}
+      />
+
+      <DeleteConfirmDialog
+        booking={bookingToRemove}
+        onClose={() => setBookingToRemove(null)}
       />
     </div>
   );

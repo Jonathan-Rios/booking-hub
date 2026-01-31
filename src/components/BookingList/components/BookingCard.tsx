@@ -8,9 +8,13 @@ import { useMemo } from "react";
 
 interface IBookingCardProps {
   booking: IBooking;
+  setBookingToRemove: (booking: IBooking | null) => void;
 }
 
-export function BookingCard({ booking }: IBookingCardProps) {
+export function BookingCard({
+  booking,
+  setBookingToRemove,
+}: IBookingCardProps) {
   const formattedDateRange = useMemo(
     () => formatDateRange(booking.startDate, booking.endDate),
     [booking.startDate, booking.endDate],
@@ -60,7 +64,7 @@ export function BookingCard({ booking }: IBookingCardProps) {
             variant="outline-tertiary"
             size="sm"
             onClick={() => {
-              // TODO: Open remove booking modal
+              setBookingToRemove(booking);
             }}
             className="w-full min-w-24 sm:w-auto"
           >

@@ -10,8 +10,16 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        "filled-primary":
+          "bg-app-primary text-text-on-primary hover:bg-app-primary/90",
+        "filled-secondary":
+          "bg-app-secondary text-text-on-secondary hover:bg-app-secondary/90",
+        "filled-tertiary":
+          "bg-app-tertiary text-text-on-tertiary hover:bg-app-tertiary/90",
         "outline-primary":
           "border border-app-primary text-app-primary hover:border-app-secondary hover:text-app-secondary",
+        "outline-secondary":
+          "border border-app-secondary text-app-secondary hover:border-app-primary hover:text-app-primary",
         "outline-tertiary":
           "border border-app-tertiary text-app-tertiary hover:border-app-secondary hover:text-app-secondary",
         outline:
