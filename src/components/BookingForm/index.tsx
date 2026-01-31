@@ -46,7 +46,7 @@ export function BookingForm({
     isSubmitting,
     onSubmit,
     isEditingBooking,
-  } = useBookingForm({ bookingToEdit, onClose });
+  } = useBookingForm({ bookingToEdit, onClose, isFormOpen: open });
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -111,7 +111,7 @@ export function BookingForm({
                   label="Start Date"
                   value={field.value}
                   onChange={field.onChange}
-                  minDate={new Date()}
+                  minDate={isEditingBooking ? undefined : new Date()}
                   placeholder="Select start date"
                   error={errors.startDate?.message}
                 />
@@ -126,7 +126,7 @@ export function BookingForm({
                   label="End Date"
                   value={field.value}
                   onChange={field.onChange}
-                  minDate={new Date()}
+                  minDate={isEditingBooking ? undefined : new Date()}
                   placeholder="Select end date"
                   error={errors.endDate?.message}
                 />
@@ -169,7 +169,11 @@ export function BookingForm({
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={isSubmitting}>
+            <Button
+              variant="filled-secondary"
+              type="submit"
+              disabled={isSubmitting}
+            >
               {isEditingBooking ? "Update Booking" : "Create Booking"}
             </Button>
           </DialogFooter>

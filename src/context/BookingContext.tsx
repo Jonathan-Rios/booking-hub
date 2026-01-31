@@ -1,6 +1,5 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
 import type { IBooking } from "@/types/booking";
-import { bookingExamples } from "@/mockData";
 
 interface IBookingContextType {
   bookings: IBooking[];
@@ -12,7 +11,7 @@ interface IBookingContextType {
 const BookingContext = createContext<IBookingContextType | null>(null);
 
 export function BookingProvider({ children }: { children: ReactNode }) {
-  const [bookings, setBookings] = useState<IBooking[]>(bookingExamples);
+  const [bookings, setBookings] = useState<IBooking[]>([]);
 
   function addBooking(data: Omit<IBooking, "id" | "createdAt">) {
     const newBooking: IBooking = {
