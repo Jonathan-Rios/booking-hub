@@ -47,11 +47,16 @@ export function BookingForm({
     onSubmit,
     isEditingBooking,
     startDate,
+    handleAccidentalClose,
   } = useBookingForm({ bookingToEdit, onClose, isFormOpen: open });
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="gap-5 sm:max-w-lg">
+      <DialogContent
+        className="gap-5 sm:max-w-lg"
+        onInteractOutside={handleAccidentalClose}
+        onEscapeKeyDown={handleAccidentalClose}
+      >
         <DialogHeader>
           <DialogTitle>
             {isEditingBooking ? "Edit Booking" : "New Booking"}

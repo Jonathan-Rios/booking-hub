@@ -69,6 +69,7 @@ export function DatePicker({
               onChange(date);
               setOpen(false);
             }}
+            fixedWeeks
             disabled={minDate ? { before: minDate } : undefined}
             autoFocus
           />

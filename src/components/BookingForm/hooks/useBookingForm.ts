@@ -6,6 +6,7 @@ import { useForm, useWatch, type DefaultValues } from "react-hook-form";
 import { useEffect } from "react";
 import { findOverlappingBookings } from "@/utils/bookingHelper";
 import { toast } from "sonner";
+import { formatDateRange } from "@/utils/dateHelper";
 
 interface IUseBookingFormProps {
   bookingToEdit: IBooking | null;
@@ -36,7 +37,7 @@ export function useBookingForm({
     handleSubmit,
     control,
     reset,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isDirty },
   } = useForm<TBookingSchema>({
     resolver: zodResolver(bookingSchema),
     defaultValues,
@@ -63,8 +64,13 @@ export function useBookingForm({
     );
 
     if (overlapping.length > 0) {
+      const conflictingBooking = overlapping[0];
+      const period = formatDateRange(
+        conflictingBooking.startDate,
+        conflictingBooking.endDate,
+      );
       toast.error("Date conflict detected", {
-        description: `This booking overlaps with "${overlapping[0].propertyName}" (${overlapping[0].guestName})`,
+        description: `Overlaps with "${conflictingBooking.propertyName}" by ${conflictingBooking.guestName}. Period: ${period}`,
       });
       return;
     }
@@ -79,6 +85,15 @@ export function useBookingForm({
     onClose();
   }
 
+  function handleAccidentalClose(e: Event) {
+    if (isDirty) {
+      e.preventDefault();
+      toast.warning("You have unsaved changes", {
+        description: "Please save or cancel your changes before closing.",
+      });
+    }
+  }
+
   return {
     register,
     handleSubmit,
@@ -88,5 +103,6 @@ export function useBookingForm({
     onSubmit,
     isEditingBooking,
     startDate,
+    handleAccidentalClose,
   };
 }
