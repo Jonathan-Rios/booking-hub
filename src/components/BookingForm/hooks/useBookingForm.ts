@@ -55,13 +55,18 @@ export function useBookingForm({
     }
   }, [bookingToEdit, reset, isFormOpen]);
 
-  function onSubmit(data: TBookingSchema) {
-    const overlapping = findOverlappingBookings(
+  function validateBookingOverlap(data: TBookingSchema): boolean {
+    if (data.status === BookingStatus.Cancelled) {
+      return true;
+    }
+
+    const overlapping = findOverlappingBookings({
       bookings,
-      data.startDate,
-      data.endDate,
-      bookingToEdit?.id,
-    );
+      startDate: data.startDate,
+      endDate: data.endDate,
+      propertyName: data.propertyName,
+      excludeId: bookingToEdit?.id,
+    });
 
     if (overlapping.length > 0) {
       const conflictingBooking = overlapping[0];
@@ -72,6 +77,14 @@ export function useBookingForm({
       toast.error("Date conflict detected", {
         description: `Overlaps with "${conflictingBooking.propertyName}" by ${conflictingBooking.guestName}. Period: ${period}`,
       });
+      return false;
+    }
+
+    return true;
+  }
+
+  function onSubmit(data: TBookingSchema) {
+    if (!validateBookingOverlap(data)) {
       return;
     }
 
