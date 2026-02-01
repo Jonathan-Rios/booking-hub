@@ -56,6 +56,33 @@ The challenge was to create a property booking management application, implement
 
 <br>
 
+### 🔒 Overlap Prevention Rules
+
+The application prevents double bookings with validation logic:
+
+#### How it works:
+
+1. **Same Property Only** - Overlap is only checked within the same property. Different properties can have overlapping dates (e.g., "Beach House" and "Mountain Cabin" can both be booked for the same period).
+
+2. **Cancelled Bookings are Ignored** - Bookings with `cancelled` status don't block new reservations. This allows rebooking a period that was previously cancelled.
+
+3. **Edit-Aware** - When editing a booking, the system excludes the current booking from the overlap check, allowing date adjustments without self-conflict.
+
+#### Validation Flow:
+
+![Validation Flow](screenshots/validation-flow.png)
+
+#### Example Scenarios:
+
+| Scenario                                                                                | Result                     |
+| --------------------------------------------------------------------------------------- | -------------------------- |
+| Book "Beach House" Jan 10-15, existing booking Jan 12-20 on "Beach House"               | ❌ Blocked                 |
+| Book "Beach House" Jan 10-15, existing booking Jan 12-20 on "Mountain Cabin"            | ✅ Allowed                 |
+| Book "Beach House" Jan 10-15, existing **cancelled** booking Jan 12-20 on "Beach House" | ✅ Allowed                 |
+| Edit booking to change dates, but new dates overlap with itself                         | ✅ Allowed (self-excluded) |
+
+<br>
+
 ## 🧪 Technologies
 
 This project was developed with the following technologies:

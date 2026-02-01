@@ -1,4 +1,4 @@
-import type { IBooking } from "@/types/booking";
+import { BookingStatus, type IBooking } from "@/types/booking";
 
 /**
  * Check if two date ranges overlap
@@ -16,21 +16,44 @@ export function hasDateOverlap(
   return startA < endB && endA > startB;
 }
 
+interface IFindOverlappingBookingsParams {
+  bookings: IBooking[];
+  startDate: Date;
+  endDate: Date;
+  propertyName: string;
+  excludeId?: string;
+}
+
 /**
- * Find bookings that overlap with the given date range
- * @param bookings List of bookings to check
- * @param startDate Start date of the range to check
- * @param endDate End date of the range to check
- * @param excludeId Optional booking ID to exclude from the check
+ * Find bookings that overlap with a given date range and property name.
+ * Ignores the booking being edited and cancelled bookings
+ * @param params.bookings List of bookings to check
+ * @param params.startDate Start date of the range to check
+ * @param params.endDate End date of the range to check
+ * @param params.propertyName Property name to check overlaps for (only same property conflicts)
+ * @param params.excludeId Optional booking ID to exclude from the check
+ * @returns Array of overlapping bookings (excludes cancelled bookings)
  */
-export function findOverlappingBookings(
-  bookings: IBooking[],
-  startDate: Date,
-  endDate: Date,
-  excludeId?: string,
-): IBooking[] {
+export function findOverlappingBookings({
+  bookings,
+  startDate,
+  endDate,
+  propertyName,
+  excludeId,
+}: IFindOverlappingBookingsParams): IBooking[] {
   return bookings.filter((booking) => {
-    if (excludeId && booking.id === excludeId) return false;
+    if (excludeId && booking.id === excludeId) {
+      return false;
+    }
+
+    if (booking.status === BookingStatus.Cancelled) {
+      return false;
+    }
+
+    if (booking.propertyName !== propertyName) {
+      return false;
+    }
+
     return hasDateOverlap(
       startDate,
       endDate,
