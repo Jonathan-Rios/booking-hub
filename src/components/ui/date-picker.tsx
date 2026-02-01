@@ -18,6 +18,7 @@ interface IDatePickerProps {
   value?: Date;
   onChange: (date: Date | undefined) => void;
   minDate?: Date;
+  initialMonth?: Date;
   placeholder?: string;
   id?: string;
 }
@@ -28,6 +29,7 @@ export function DatePicker({
   value,
   onChange,
   minDate,
+  initialMonth,
   placeholder = "Select a date",
   id,
 }: IDatePickerProps) {
@@ -62,7 +64,7 @@ export function DatePicker({
           <Calendar
             mode="single"
             selected={value}
-            defaultMonth={value}
+            defaultMonth={value ?? initialMonth}
             onSelect={(date) => {
               onChange(date);
               setOpen(false);

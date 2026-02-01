@@ -46,6 +46,7 @@ export function BookingForm({
     isSubmitting,
     onSubmit,
     isEditingBooking,
+    startDate,
   } = useBookingForm({ bookingToEdit, onClose, isFormOpen: open });
 
   return (
@@ -126,7 +127,10 @@ export function BookingForm({
                   label="End Date"
                   value={field.value}
                   onChange={field.onChange}
-                  minDate={isEditingBooking ? undefined : new Date()}
+                  minDate={
+                    isEditingBooking ? undefined : (startDate ?? new Date())
+                  }
+                  initialMonth={field.value ?? startDate}
                   placeholder="Select end date"
                   error={errors.endDate?.message}
                 />

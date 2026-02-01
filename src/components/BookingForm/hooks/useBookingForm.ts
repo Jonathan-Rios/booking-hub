@@ -2,7 +2,7 @@ import { useBookings } from "@/context/BookingContext";
 import { bookingSchema, type TBookingSchema } from "../schemas/bookingSchema";
 import { BookingStatus, type IBooking } from "@/types/booking";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, type DefaultValues } from "react-hook-form";
+import { useForm, useWatch, type DefaultValues } from "react-hook-form";
 import { useEffect } from "react";
 import { findOverlappingBookings } from "@/utils/bookingHelper";
 import { toast } from "sonner";
@@ -41,6 +41,8 @@ export function useBookingForm({
     resolver: zodResolver(bookingSchema),
     defaultValues,
   });
+
+  const startDate = useWatch({ control, name: "startDate" });
 
   useEffect(() => {
     if (!isFormOpen) return;
@@ -85,5 +87,6 @@ export function useBookingForm({
     isSubmitting,
     onSubmit,
     isEditingBooking,
+    startDate,
   };
 }
